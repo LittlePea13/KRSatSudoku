@@ -1,12 +1,13 @@
 def update_clauses(clauses, var_dict):
-	'''
-	Returns a modified list of clauses, 
-	    - a clause is not included, if it already has a true literal
-	    - a modified clause is included, otherwise
-		- modification of clause, if a literal has been set false already
-		- no change, othwerwise
-	'''
+    '''
+    Returns a modified list of clauses, 
+        - a clause is not included, if it already has a true literal
+        - a modified clause is included, otherwise
+            - modification of clause, if a literal has been set false already
+            - no change, othwerwise
+    '''
 # TODO delete old list?
+    new_clauses = []
     for clause in clauses:
         new_clause = []
         for literal in clause:
