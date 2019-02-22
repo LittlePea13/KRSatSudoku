@@ -17,7 +17,7 @@ def sudoku2dimacs(filename):
             with open('sudokus/{}_{}.txt'.format(os.path.splitext(filename)[0], file_id), 'w') as output:
                 output.write('p cnf {} {}\n'.format(len(variables), len(variables)))
                 for var in variables:
-                    output.write(var + '\n')
+                    output.write(var + '0 \n')
 
 if __name__ == '__main__':
     filename = sys.argv[1]
