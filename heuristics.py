@@ -15,9 +15,10 @@ def Jeroslow_wang(clauses):
     jeroslow_values = {}
     for clause in clauses:
         for literal in clause:
-            if literal in jeroslow_values:
-                jeroslow_values[literal] += pow(2,-len(clause))
-            else:
-                jeroslow_values[literal] = pow(2,-len(clause))
+            if sign(literal) == 1:
+                if literal in jeroslow_values:
+                    jeroslow_values[literal] += pow(2,-len(clause))
+                else:
+                    jeroslow_values[literal] = pow(2,-len(clause))
 
     return max(jeroslow_values, key=jeroslow_values.get
