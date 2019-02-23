@@ -20,4 +20,4 @@ def Jeroslow_wang(clauses):
             else:
                 jeroslow_values[literal] = pow(2,-len(clause))
 
-    return max(jeroslow_values, key=jeroslow_values.get
+    return max(jeroslow_values, key=jeroslow_values.get)
