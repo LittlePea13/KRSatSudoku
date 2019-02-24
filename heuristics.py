@@ -47,3 +47,57 @@ def get_column(variable):
     return str(variable)[1]
 def get_block(variable):
     return (int(np.ceil(int(str(variable)[0])/3))-1)*3 + int(np.ceil(int(str(variable)[1])/3))
+
+def Row_wise_rand(clauses):
+    clauses_by_row = [[],[],[],[],[],[],[],[],[]]
+    for element in [x for x in itertools.chain.from_iterable(clauses)]:
+        clauses_by_row[int(get_row(abs(element)))-1].append(element)
+    for element in clauses_by_row:
+        if len(element)>0:
+             return random.choice(element)
+def Column_wise_rand(clauses):
+    clauses_by_column = [[],[],[],[],[],[],[],[],[]]
+    for element in [x for x in itertools.chain.from_iterable(clauses)]:
+        clauses_by_column[int(get_column(abs(element)))-1].append(element)
+    for element in clauses_by_column:
+        if len(element)>0:
+             return random.choice(element)
+
+def Block_wise_rand(clauses):
+    clauses_by_block = [[],[],[],[],[],[],[],[],[]]
+    for element in [x for x in itertools.chain.from_iterable(clauses)]:
+        clauses_by_block[int(get_block(abs(element)))-1].append(element)
+    for element in clauses_by_block:
+        if len(element)>0:
+             return random.choice(element)
+
+def Row_wise_lenght(clauses):
+    clauses_by_row = [[],[],[],[],[],[],[],[],[]]
+    for element in [x for x in itertools.chain.from_iterable(clauses)]:
+        clauses_by_row[int(get_row(abs(element)))-1].append(element)
+    for element in sorted(clauses_by_row, key= lambda x: len(x)):
+        set(element)
+        set(element)
+        if len(element)>0:
+             return random.choice(element)
+def Row_wise_lenght_set(clauses):
+    clauses_by_row = [[],[],[],[],[],[],[],[],[]]
+    for element in [x for x in itertools.chain.from_iterable(clauses)]:
+        clauses_by_row[int(get_row(abs(element)))-1].append(element)
+    for element in sorted(clauses_by_row, key= lambda x: len(set(x))):
+        if len(element)>0:
+             return random.choice(set(element))
+def Column_wise_lenght(clauses):
+    clauses_by_column = [[],[],[],[],[],[],[],[],[]]
+    for element in [x for x in itertools.chain.from_iterable(clauses)]:
+        clauses_by_column[int(get_column(abs(element)))-1].append(element)
+    for element in sorted(clauses_by_column, key= lambda x: len(x)):
+        if len(element)>0:
+             return random.choice(element)
+def Block_wise_lenght(clauses):
+    clauses_by_block = [[],[],[],[],[],[],[],[],[]]
+    for element in [x for x in itertools.chain.from_iterable(clauses)]:
+        clauses_by_block[int(get_block(abs(element)))-1].append(element)
+    for element in orted(clauses_by_block, key= lambda x: len(x)):
+        if len(element)>0:
+             return random.choice(element)

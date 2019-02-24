@@ -17,7 +17,7 @@ def DL(clauses, variables, n_iterations, stat_collector, heuristics = Random_spl
     for clause in clauses:
         if clause == []:
             #INC backtrack
-            #stat_collector.n_backtrack += 1
+            stat_collector.n_backtrack += 1
             return False, variables
         
     new_clauses, variables, sat = simplification(clauses, variables)

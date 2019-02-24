@@ -4,7 +4,7 @@ from heuristics import get_block, get_column, get_row
 class StatCollector:
     def __init__(self):
         self.n_split = 0
-        #self.n_backtrack = 0
+        self.n_backtrack = 0
         #self.n_flip = 0
         
         self.split_2_sat = {}
