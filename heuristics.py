@@ -35,8 +35,15 @@ def Jeroslow_wang(clauses):
     return max(jeroslow_values, key=jeroslow_values.get)
 
 def Row_wise(clauses):
-    return sorted(set([abs(x) for x in itertools.chain.from_iterable(clauses)]), key=lambda x: str(x)[0])[0]
+    return sorted(set([abs(x) for x in itertools.chain.from_iterable(clauses)]), key=lambda x: get_row(x))[0]
 def Column_wise(clauses):
-    return sorted(set([abs(x) for x in itertools.chain.from_iterable(clauses)]), key=lambda x: str(x)[1])[0]
+    return sorted(set([abs(x) for x in itertools.chain.from_iterable(clauses)]), key=lambda x: get_column(x))[0]
 def Block_wise(clauses):
-    return sorted(set([abs(x) for x in itertools.chain.from_iterable(clauses)]), key=lambda x: str(np.ceil(int(str(x)[0])/3)) + str(np.ceil(int(str(x)[1])/3)))[0]
+    return sorted(set([abs(x) for x in itertools.chain.from_iterable(clauses)]), key=lambda x: get_block(x))[0]
+
+def get_row(variable):
+    return str(variable)[0]
+def get_column(variable):
+    return str(variable)[1]
+def get_block(variable):
+    return (int(np.ceil(int(str(variable)[0])/3))-1)*3 + int(np.ceil(int(str(variable)[1])/3))
