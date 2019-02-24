@@ -19,4 +19,9 @@ dependencies:
   - wheel=0.32.3=py36_0
   - xz=5.2.4=h1de35cc_4
   - zlib=1.2.11=h1de35cc_3
+  - pip:
+    - nltk==3.4
+    - numpy==1.16.1
+    - singledispatch==3.4.0.3
+    - six==1.12.0
 prefix: /Users/perelluis/anaconda3/envs/KR
