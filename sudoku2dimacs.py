@@ -14,7 +14,7 @@ def sudoku2dimacs(filename):
                     column = str(idx%9 + 1)
                     variables.append(row + column + char)
 
-            with open('sudokus/{}_{}.txt'.format(os.path.splitext(filename)[0], file_id), 'w') as output:
+            with open('sudokus/{}_{}.txt'.format(os.path.splitext(os.path.basename(filename))[0], file_id), 'w') as output:
                 output.write('p cnf {} {}\n'.format(len(variables), len(variables)))
                 for var in variables:
                     output.write(var + ' 0\n')
