@@ -35,13 +35,12 @@ def DL(clauses, variables, n_iterations, stat_collector, heuristics = Random_spl
     #INC split
     stat_collector.n_split += 1
     stat_collector.last_split.append(split)
-    sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{split:sign(split)}}), {**variables,**{split:sign(split)}}, n_iterations +1, stat_collector,heuristics)
-    
+    sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{abs(split):sign(split)}}), {**variables,**{abs(split):sign(split)}}, n_iterations +1, stat_collector,heuristics)
     if sat is False:
         #INC flip
         #stat_collector.n_flip += 1
         stat_collector.last_split.append(-split)
-        sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{split:-sign(split)}}), {**variables,**{split:-sign(split)}}, n_iterations +1, stat_collector, heuristics)
+        sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{abs(split):-sign(split)}}), {**variables,**{abs(split):-sign(split)}}, n_iterations +1, stat_collector, heuristics)
     
     return sat, variables_split
 def main(filename, heuristics, print_sudoku = True):
@@ -52,12 +51,12 @@ def main(filename, heuristics, print_sudoku = True):
     stat_collector = StatCollector()
     result, variables = DL(clauses, {}, 1, stat_collector, heuristics)
     t1 = time.time()
-    print('Time to solve sudoku:', t1-t0)
-    print('Result ', result)
     if print_sudoku:
+        print('Time to solve sudoku:', t1-t0)
+        print('Result ', result)
         print_sudoku(sorted([k for k,v in variables.items() if v>0]))
-    stat_collector.print_stats()
-    return result, t1-t0
+    stat_collector.print_stats(printing=False)
+    return result, t1-t0, stat_collector.n_backtrack, stat_collector.n_split, stat_collector.max_split
 
 if __name__ == '__main__':
     # Example to run: python main.py sudokus/damnhard.sdk_0.txt 1

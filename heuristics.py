@@ -16,11 +16,10 @@ def DLCS(clauses):
     data_neq = Counter([x for x in itertools.chain.from_iterable(clauses)])
     data = Counter([abs(x) for x in itertools.chain.from_iterable(clauses)])
     split = data.most_common(1)[0][0]
-    print(split*(-1, 1)[data_neq[split] > data[split]/2])
     return split*(-1, 1)[data_neq[split] > data[split]/2]
 
 def Random_split(clauses):
-    return abs(random.choice([x for x in itertools.chain.from_iterable(clauses)]))
+    return random.choice([x for x in itertools.chain.from_iterable(clauses)])
 
 def Jeroslow_wang(clauses):
     jeroslow_values = {}
@@ -76,10 +75,9 @@ def Row_wise_lenght(clauses):
     for element in [x for x in itertools.chain.from_iterable(clauses)]:
         clauses_by_row[int(get_row(abs(element)))-1].append(element)
     for element in sorted(clauses_by_row, key= lambda x: len(x)):
-        set(element)
-        set(element)
         if len(element)>0:
              return random.choice(element)
+
 def Row_wise_lenght_set(clauses):
     clauses_by_row = [[],[],[],[],[],[],[],[],[]]
     for element in [x for x in itertools.chain.from_iterable(clauses)]:
@@ -87,6 +85,7 @@ def Row_wise_lenght_set(clauses):
     for element in sorted(clauses_by_row, key= lambda x: len(set(x))):
         if len(element)>0:
              return random.choice(set(element))
+
 def Column_wise_lenght(clauses):
     clauses_by_column = [[],[],[],[],[],[],[],[],[]]
     for element in [x for x in itertools.chain.from_iterable(clauses)]:
@@ -94,10 +93,11 @@ def Column_wise_lenght(clauses):
     for element in sorted(clauses_by_column, key= lambda x: len(x)):
         if len(element)>0:
              return random.choice(element)
+
 def Block_wise_lenght(clauses):
     clauses_by_block = [[],[],[],[],[],[],[],[],[]]
     for element in [x for x in itertools.chain.from_iterable(clauses)]:
         clauses_by_block[int(get_block(abs(element)))-1].append(element)
-    for element in orted(clauses_by_block, key= lambda x: len(x)):
+    for element in sorted(clauses_by_block, key= lambda x: len(x)):
         if len(element)>0:
              return random.choice(element)
