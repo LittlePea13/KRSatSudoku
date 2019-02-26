@@ -16,8 +16,6 @@ def DL(clauses, variables, n_iterations, stat_collector, heuristics = Random_spl
         return True, variables
     for clause in clauses:
         if clause == []:
-            #INC backtrack
-            stat_collector.n_backtrack += 1
             return False, variables
         
     new_clauses, variables, sat = simplification(clauses, variables)
@@ -30,16 +28,15 @@ def DL(clauses, variables, n_iterations, stat_collector, heuristics = Random_spl
         return DL(new_clauses, variables, n_iterations, stat_collector, heuristics)
     
     split = heuristics(new_clauses)
-    value = 1 if random.random() < 0.5 else -1
-    #value = 1
+
     #INC split
     stat_collector.n_split += 1
     stat_collector.last_split.append(split)
+    
     sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{abs(split):sign(split)}}), {**variables,**{abs(split):sign(split)}}, n_iterations +1, stat_collector,heuristics)
     if sat is False:
-        #INC flip
-        #stat_collector.n_flip += 1
         stat_collector.last_split.append(-split)
+        
         sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{abs(split):-sign(split)}}), {**variables,**{abs(split):-sign(split)}}, n_iterations +1, stat_collector, heuristics)
     
     return sat, variables_split
