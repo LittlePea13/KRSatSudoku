@@ -21,21 +21,25 @@ def DL(clauses, variables, n_iterations, stat_collector, heuristics = Random_spl
     new_clauses = update_clauses(new_clauses, variables)
     
     #RECALC clause and variable stat
-    stat_collector.update_stats(clauses, variables)
-    
+    #stat_collector.update_stats(clauses, variables)
+    stat_collector.create_timestamp(variables)
+
     if len([1 for element in clauses if len(element)==1])>1:
         return DL(new_clauses, variables, n_iterations, stat_collector, heuristics)
     
     split = heuristics(new_clauses)
 
     #INC split
-    stat_collector.n_split += 1
+    #stat_collector.n_split += 1
+    stat_collector.split(abs(split))
+   
+
     stat_collector.last_split.append(split)
     
     sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{abs(split):sign(split)}}), {**variables,**{abs(split):sign(split)}}, n_iterations +1, stat_collector,heuristics)
     if sat is False:
         stat_collector.last_split.append(-split)
-        
+        stat_collector.backtrack()
         sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{abs(split):-sign(split)}}), {**variables,**{abs(split):-sign(split)}}, n_iterations +1, stat_collector, heuristics)
     
     return sat, variables_split

@@ -8,7 +8,7 @@ if __name__ == '__main__':
     filename = sys.argv[1]
     heur = sys.argv[2]
     if heur == '1' or heur is None:
-        heuristics = Random_split
+        heuristics = Jeroslow_wang
     else:
         heuristics = DLCS
     Davis_Putnam(filename, heuristics)
