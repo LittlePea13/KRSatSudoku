@@ -39,11 +39,11 @@ class StatCollector:
         self.depth += 1
 
         r, c, _ = str(split_var)
-        #b = 
+        b = (int(np.ceil(int(r)/3))-1)*3 + int(np.ceil(int(c)/3))
 
-        self.row.add(r)
-        self.column.add(c)
-        #self.block.add(b)
+        self.row.add(int(r))
+        self.column.add(int(c))
+        self.block.add(int(b))
 
     def backtrack(self):
         self.depth = 0
@@ -51,6 +51,24 @@ class StatCollector:
     def update_stats(self, clauses, variables):
         pos = [1 for variable, value in variables.items() if value == 1]
         self.split_2_sat[self.n_split] = len(pos)
+
+    def visualize(self):
+        iters = [ts.iter for ts in self.history]
+        splits = [ts.split for ts in self.history]
+        depths = [ts.depth for ts in self.history]
+        sats = [ts.sat for ts in self.history]
+        rows = [ts.row for ts in self.history]
+        columns = [ts.column for ts in self.history]
+        blocks = [ts.block for ts in self.history]
+
+       # plt.plot(iters, splits, label = 'split')
+       # plt.plot(iters, sats, label = 'sat')
+       # plt.plot(iters, depths, label = 'depths')
+        plt.plot(iters, rows, label = 'rows')
+        plt.plot(iters, columns, label = 'columns')
+        plt.plot(iters, blocks, label = 'blocks')
+        plt.legend()
+        plt.show()
         
     def print_stats(self, printing = True):
         if printing == False:
