@@ -69,9 +69,17 @@ class StatCollector:
         plt.plot(iters, blocks, label = 'blocks')
         plt.legend()
         plt.show()
+    
+    def get_results(self):
+        last_ts = self.history[-1]
+        depths = [ts.depth for ts in self.history]
+        max_depth = max(depths)
+        avg_depth = sum(depths) / len(depths)
+
+        return last_ts.iter, last_ts.split, last_ts.row, last_ts.column, last_ts.block, max_depth, avg_depth
         
     def print_stats(self, printing = True):
-        if printing == False:
+        if printing == True:
             print('#Splits: {}'.format(self.n_split))
             print('#Iteration {}'.format(self.n_iter))
             print('#Timestamp {}'.format(len(self.history)))

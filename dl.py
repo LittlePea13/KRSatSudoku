@@ -58,7 +58,7 @@ def Davis_Putnam(filename, heuristics, print_results = True):
         print_sudoku(sorted([k for k,v in variables.items() if v>0]))
     stat_collector.print_stats(printing=False)
 
-    stat_collector.visualize()
-
+    #stat_collector.visualize()
     
-    return result, t1-t0, stat_collector.n_split, stat_collector.max_split
+    
+    return result, t1-t0, stat_collector
