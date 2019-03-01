@@ -46,6 +46,6 @@ def experiment(sudoku_path, heur):
         result_list = [sat_result, time] + list(stats)
         result_df = result_df.append(pd.Series(result_list, index=result_df.columns ), ignore_index=True)
 
-        if (idx % 22000) == 0:
+        if (idx % 2200) == 0:
             print('{} is done with {}/{}'.format(heur,idx+1, all_len))
     result_df.to_csv('{}.result.csv'.format(heur))

@@ -1,11 +1,11 @@
 import os
 import sys
 
-def sudoku2dimacs(filename):
+def sudoku2dimacs(input_path, output_path):
     '''
     Converts a sudoku file line-by-line to DIMACS format into individual puzzles
     '''
-    with open(filename, 'r') as f:
+    with open(input_path, 'r') as f:
         for file_id, line in enumerate(f):
             variables = []
             for idx, char in enumerate(line.strip()):
@@ -14,11 +14,12 @@ def sudoku2dimacs(filename):
                     column = str(idx%9 + 1)
                     variables.append(row + column + char)
 
-            with open('sudokus/{}_{}.txt'.format(os.path.splitext(os.path.basename(filename))[0], file_id), 'w') as output:
+            with open('{}/{}_{}.txt'.format(output_path,os.path.splitext(os.path.basename(input_path))[0], file_id), 'w') as output:
                 output.write('p cnf {} {}\n'.format(len(variables), len(variables)))
                 for var in variables:
                     output.write(var + ' 0\n')
 
 if __name__ == '__main__':
-    filename = sys.argv[1]
-    sudoku2dimacs(filename)
+    input_path = sys.argv[1]
+    output_path = sys.argv[2]
+    sudoku2dimacs(input_path, output_path)
