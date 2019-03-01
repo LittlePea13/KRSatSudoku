@@ -37,12 +37,15 @@ def experiment(sudoku_path, heur):
 
 
     result_df = pd.DataFrame(columns=['satisfied', 'time', 'n_iter', 'n_split',  'vis_row', 'vis_column', 'vis_block', 'max_depth' ,'avg_depth'])
-    for filename in os.listdir(sudoku_path):
+    all_len = len(os.listdir(sudoku_path))
+    for idx, filename in enumerate(os.listdir(sudoku_path)):
         sudoku_file = sudoku_path + filename
 
         sat_result, time, stat_collector = Davis_Putnam(sudoku_file, heuristics, print_results=False)
         stats = stat_collector.get_results()
         result_list = [sat_result, time] + list(stats)
         result_df = result_df.append(pd.Series(result_list, index=result_df.columns ), ignore_index=True)
-       
+
+        if (idx % 22000) == 0:
+            print('{} is done with {}/{}'.format(heur,idx+1, all_len))
     result_df.to_csv('{}.result.csv'.format(heur))
