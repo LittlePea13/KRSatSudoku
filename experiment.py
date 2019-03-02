@@ -48,7 +48,7 @@ def experiment(sudoku_path, heur, checkpoint = True):
     else:
         result_df = pd.DataFrame(columns=['satisfied', 'time', 'n_iter', 'n_split', 'n_backtrack', 'vis_row', 'vis_column', 'vis_block', 'max_depth' ,'avg_depth'])
 
-    for idx, filename in enumerate(sudoku_list[-starting_point:],starting_point):
+    for idx, filename in enumerate(sudoku_list[starting_point:],starting_point):
         sudoku_file = sudoku_path + filename
 
         sat_result, time, stat_collector = Davis_Putnam(sudoku_file, heuristics, print_results=False)
