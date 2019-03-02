@@ -88,5 +88,5 @@ def find_latest_checkpoint(heur):
 
 if __name__=='__main__':
     sudoku_path = "all_sudokus/"
-    heur = 'Jeroslow_wang'
+    heur = 'DLCS'
     experiment(sudoku_path, heur,checkpoint=True)
