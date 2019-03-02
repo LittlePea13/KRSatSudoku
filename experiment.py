@@ -6,7 +6,6 @@ import os
 import pandas as pd
 
 
-
 def experiment(sudoku_path, heur, checkpoint = True):
     if heur == 'DLCS' or heur is None:
         heuristics = DLCS
@@ -39,15 +38,15 @@ def experiment(sudoku_path, heur, checkpoint = True):
     
     sudoku_list = os.listdir(sudoku_path)
     all_len = len(sudoku_list)
-    
+
+    result_df = pd.DataFrame(columns=['satisfied', 'time', 'n_iter', 'n_split', 'n_backtrack', 'vis_row', 'vis_column', 'vis_block', 'max_depth' ,'avg_depth'])
+ 
     if checkpoint == True:
         starting_point = find_latest_checkpoint(heur)
         if starting_point != 0:
             result_df = pd.read_csv('{}.result.checkpoint_{}.csv'.format(heur,starting_point),index_col='Unnamed: 0')
         print('{} is starting at {}'.format(heur, starting_point+1))
-    else:
-        result_df = pd.DataFrame(columns=['satisfied', 'time', 'n_iter', 'n_split', 'n_backtrack', 'vis_row', 'vis_column', 'vis_block', 'max_depth' ,'avg_depth'])
-
+        
     for idx, filename in enumerate(sudoku_list[starting_point:],starting_point):
         sudoku_file = sudoku_path + filename
 

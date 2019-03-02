@@ -6,8 +6,6 @@ heurs = ['Random_split', 'DLCS', 'Jeroslow_wang', 'Row_wise_lenght', 'Column_wis
 
 sudoku_path = ['all_sudokus/' for i in range(len(heurs))]
 
-
-
 if __name__=='__main__':
     p = Pool(len(heurs))
     p.starmap(experiment,zip(sudoku_path, heurs))
