@@ -9,11 +9,11 @@ import pandas as pd
 
 def experiment(sudoku_path, heur):
     if heur == 'DLCS' or heur is None:
-        heuristics = Row_wise_lenght
+        heuristics = DLCS
     elif heur == 'Jeroslow_wang':
         heuristics = Column_wise_lenght
     elif heur == 'Row_wise_lenght':
-        heuristics = Block_wise_lenght
+        heuristics = Row_wise_lenght
     elif heur == 'Column_wise_lenght':
         heuristics = Column_wise_lenght
     elif heur == 'Block_wise_lenght':
