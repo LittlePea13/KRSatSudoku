@@ -3,14 +3,15 @@ import numpy as np
 from heuristics import get_block, get_column, get_row
 from collections import namedtuple
 
-TimeStamp = namedtuple('TimeStamp', ['iter', 'split', 'sat','row','column','block', 'depth'])
+TimeStamp = namedtuple('TimeStamp', ['backtrack','iter', 'split', 'sat','row','column','block', 'depth'])
 
 class StatCollector:
     def __init__(self):        
         self.history = []
         
         self.n_split = 0
-        self.n_iter = 10
+        self.n_backtrack = 0
+        self.n_iter = 0
         self.depth = 0
 
         self.row = set()
@@ -28,7 +29,7 @@ class StatCollector:
     def create_timestamp(self, variables):
         self.n_iter += 1
         sat = self.get_satisfied(variables)
-        new_record = TimeStamp(self.n_iter, self.n_split, sat, len(self.row), len(self.column), len(self.block), self.depth)
+        new_record = TimeStamp(self.n_backtrack, self.n_iter, self.n_split, sat, len(self.row), len(self.column), len(self.block), self.depth)
         self.history.append(new_record)
     
     def get_satisfied(self, variables):
@@ -47,7 +48,7 @@ class StatCollector:
 
     def backtrack(self):
         self.depth = 0
-        
+
     def update_stats(self, clauses, variables):
         pos = [1 for variable, value in variables.items() if value == 1]
         self.split_2_sat[self.n_split] = len(pos)
@@ -69,15 +70,15 @@ class StatCollector:
         plt.plot(iters, blocks, label = 'blocks')
         plt.legend()
         plt.show()
-    
+
     def get_results(self):
         last_ts = self.history[-1]
         depths = [ts.depth for ts in self.history]
         max_depth = max(depths)
         avg_depth = sum(depths) / len(depths)
 
-        return last_ts.iter, last_ts.split, last_ts.row, last_ts.column, last_ts.block, max_depth, avg_depth
-        
+        return last_ts.backtrack, last_ts.iter, last_ts.split, last_ts.row, last_ts.column, last_ts.block, max_depth, avg_depth
+
     def print_stats(self, printing = True):
         if printing == True:
             print('#Splits: {}'.format(self.n_split))

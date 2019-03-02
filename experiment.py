@@ -11,7 +11,7 @@ def experiment(sudoku_path, heur):
     if heur == 'DLCS' or heur is None:
         heuristics = DLCS
     elif heur == 'Jeroslow_wang':
-        heuristics = Column_wise_lenght
+        heuristics = Jeroslow_wang
     elif heur == 'Row_wise_lenght':
         heuristics = Row_wise_lenght
     elif heur == 'Column_wise_lenght':
@@ -36,7 +36,7 @@ def experiment(sudoku_path, heur):
         print('wrong heuristics')
 
 
-    result_df = pd.DataFrame(columns=['satisfied', 'time', 'n_iter', 'n_split',  'vis_row', 'vis_column', 'vis_block', 'max_depth' ,'avg_depth'])
+    result_df = pd.DataFrame(columns=['satisfied', 'time', 'n_backtracks' ,'n_iter', 'n_split',  'vis_row', 'vis_column', 'vis_block', 'max_depth' ,'avg_depth'])
     all_len = len(os.listdir(sudoku_path))
     for idx, filename in enumerate(os.listdir(sudoku_path)):
         sudoku_file = sudoku_path + filename
