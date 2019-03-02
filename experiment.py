@@ -4,7 +4,7 @@ from dl import Davis_Putnam
 import sys
 import os
 import pandas as pd
-
+from multiprocessing import Pool
 
 def experiment(sudoku_path, heur, checkpoint = True):
     if heur == 'DLCS' or heur is None:
@@ -33,6 +33,7 @@ def experiment(sudoku_path, heur, checkpoint = True):
         heuristics = Random_split
     else:
         print('wrong heuristics')
+        return 
 
 
     
@@ -46,19 +47,25 @@ def experiment(sudoku_path, heur, checkpoint = True):
         if starting_point != 0:
             result_df = pd.read_csv('{}.result.checkpoint_{}.csv'.format(heur,starting_point),index_col='Unnamed: 0')
         print('{} is starting at {}'.format(heur, starting_point+1))
-        
-    for idx, filename in enumerate(sudoku_list[starting_point:],starting_point):
-        sudoku_file = sudoku_path + filename
 
-        sat_result, time, stat_collector = Davis_Putnam(sudoku_file, heuristics, print_results=False)
-        stats = stat_collector.get_results()
-        result_list = [sat_result, time] + list(stats)
-        result_df = result_df.append(pd.Series(result_list, index=result_df.columns ), ignore_index=True)
+       
+    #for idx, filename in enumerate(sudoku_list[starting_point:],starting_point):
+       # sudoku_file = sudoku_path + filename
 
-        if (idx % int(all_len*0.1)) == 0 and idx > 0:
-            print('{} is done with {}/{}'.format(heur,idx+1, all_len))
-            if checkpoint == True:
-                result_df.to_csv('{}.result.checkpoint_{}.csv'.format(heur,idx))
+    pool = Pool(64)
+    idx = 0
+    dp_input = [(sudoku_path+filename, heuristics, False) for filename in sudoku_list]
+        #sat_result, time, stat_collector = Davis_Putnam(sudoku_file, heuristics, print_results=False)
+    sat_result, time, stat_collector = pool.starmap(Davis_Putnam, dp_input)
+    idx += 1
+    stats = stat_collector.get_results()
+    result_list = [sat_result, time] + list(stats)
+    result_df = result_df.append(pd.Series(result_list, index=result_df.columns ), ignore_index=True)
+
+    if (idx % int(all_len*0.1)) == 0 and idx > 0:
+        print('{} is done with {}/{}'.format(heur,idx+1, all_len))
+        if checkpoint == True:
+            result_df.to_csv('{}.result.checkpoint_{}.csv'.format(heur,idx))
 
     print('{} is done'.format(heur))
     result_df.to_csv('{}.result.csv'.format(heur))
@@ -74,5 +81,12 @@ def find_latest_checkpoint(heur):
             else:
                 ckp = 0
             checkpoint_to_filename[ckp] = filename
+    if len(checkpoint_to_filename) == 0:
+        return 0
+    else:
+        return max(list(checkpoint_to_filename.keys()))
 
-    return max(list(checkpoint_to_filename.keys()))
+if __name__=='__main__':
+    sudoku_path = "all_sudokus/"
+    heur = 'Jeroslow_wang'
+    experiment(sudoku_path, heur,checkpoint=True)
