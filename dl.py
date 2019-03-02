@@ -15,6 +15,8 @@ def DL(clauses, variables, n_iterations, stat_collector, heuristics = Random_spl
         return True, variables
     for clause in clauses:
         if clause == []:
+            #INC backtrack
+            stat_collector.backtrack()
             return False, variables
         
     new_clauses, variables, sat = simplification(clauses, variables)
@@ -39,8 +41,6 @@ def DL(clauses, variables, n_iterations, stat_collector, heuristics = Random_spl
     sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{abs(split):sign(split)}}), {**variables,**{abs(split):sign(split)}}, n_iterations +1, stat_collector,heuristics)
     if sat is False:
         stat_collector.last_split.append(-split)
-        #INC backtrack
-        stat_collector.backtrack()
         sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{abs(split):-sign(split)}}), {**variables,**{abs(split):-sign(split)}}, n_iterations +1, stat_collector, heuristics)
     
     return sat, variables_split
