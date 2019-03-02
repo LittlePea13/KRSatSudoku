@@ -30,7 +30,6 @@ def DL(clauses, variables, n_iterations, stat_collector, heuristics = Random_spl
         return DL(new_clauses, variables, n_iterations, stat_collector, heuristics)
     
     split = heuristics(new_clauses)
-    value = 1 if random.random() < 0.5 else -1
     #value = 1
     #INC split
     stat_collector.n_split += 1
@@ -43,7 +42,7 @@ def DL(clauses, variables, n_iterations, stat_collector, heuristics = Random_spl
         sat, variables_split = DL(update_clauses(new_clauses, {**variables,**{abs(split):-sign(split)}}), {**variables,**{abs(split):-sign(split)}}, n_iterations +1, stat_collector, heuristics)
     
     return sat, variables_split
-def main(filename, heuristics, print_sudoku = True):
+def main(filename, heuristics, printing = True):
     rules,_,_ = parse_rules('sudoku-rules.txt')
     sudoku_clauses,_,_ = parse_rules(filename)
     clauses = sudoku_clauses + rules
@@ -51,7 +50,7 @@ def main(filename, heuristics, print_sudoku = True):
     stat_collector = StatCollector()
     result, variables = DL(clauses, {}, 1, stat_collector, heuristics)
     t1 = time.time()
-    if print_sudoku:
+    if printing:
         print('Time to solve sudoku:', t1-t0)
         print('Result ', result)
         print_sudoku(sorted([k for k,v in variables.items() if v>0]))
