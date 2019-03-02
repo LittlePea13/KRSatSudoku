@@ -3,24 +3,20 @@ import numpy as np
 from heuristics import get_block, get_column, get_row
 from collections import namedtuple
 
-TimeStamp = namedtuple('TimeStamp', ['iter', 'split', 'sat','row','column','block', 'depth'])
+TimeStamp = namedtuple('TimeStamp', ['iter', 'split','backtrack', 'sat','row','column','block', 'depth'])
 
 class StatCollector:
     def __init__(self):        
         self.history = []
         
         self.n_split = 0
-        self.n_iter = 10
+        self.n_backtrack = 0
+        self.n_iter = 0
         self.depth = 0
 
         self.row = set()
         self.column = set()
         self.block = set()
-
-        #TODO rewrite this part
-        self.split_2_sat = {}
-        self.iter_2_split = {}
-        self.iter_2_sat = {}
 
         self.last_split = []
         self.max_split = {}
@@ -28,7 +24,7 @@ class StatCollector:
     def create_timestamp(self, variables):
         self.n_iter += 1
         sat = self.get_satisfied(variables)
-        new_record = TimeStamp(self.n_iter, self.n_split, sat, len(self.row), len(self.column), len(self.block), self.depth)
+        new_record = TimeStamp(self.n_iter, self.n_split, self.n_backtrack, sat, len(self.row), len(self.column), len(self.block), self.depth)
         self.history.append(new_record)
     
     def get_satisfied(self, variables):
@@ -46,11 +42,8 @@ class StatCollector:
         self.block.add(int(b))
 
     def backtrack(self):
+        self.n_backtrack += 1
         self.depth = 0
-        
-    def update_stats(self, clauses, variables):
-        pos = [1 for variable, value in variables.items() if value == 1]
-        self.split_2_sat[self.n_split] = len(pos)
 
     def visualize(self):
         iters = [ts.iter for ts in self.history]
@@ -76,7 +69,7 @@ class StatCollector:
         max_depth = max(depths)
         avg_depth = sum(depths) / len(depths)
 
-        return last_ts.iter, last_ts.split, last_ts.row, last_ts.column, last_ts.block, max_depth, avg_depth
+        return last_ts.iter, last_ts.split, last_ts.backtrack, last_ts.row, last_ts.column, last_ts.block, max_depth, avg_depth
         
     def print_stats(self, printing = True):
         if printing == True:
@@ -91,8 +84,3 @@ class StatCollector:
         max_column_split_data = sorted(self.last_split, key=lambda x: get_column(abs(x)))[-1]
         max_block_split_data = sorted(self.last_split, key=lambda x: get_block(abs(x)))[-1]
         self.max_split = {'max_row': get_row(abs(max_row_split_data)), 'max_column': get_column(abs(max_column_split_data)), 'max_block':  get_block(abs(max_block_split_data))}
-        if printing:
-            print('Last Split: {}'.format(last_split_data))
-            print('Max row in a Split: ', get_row(abs(max_row_split_data)),' Max column in a Split: ', get_column(abs(max_column_split_data)),' Max block in a Split: ', get_block(abs(max_block_split_data)))
-            plt.plot(list(self.split_2_sat.keys()),list(self.split_2_sat.values()))
-            plt.show()
