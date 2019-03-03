@@ -1,16 +1,8 @@
-from nltk.probability import FreqDist, MLEProbDist
 import collections, itertools
 from simplificator import sign
 import random
-import numpy as np
+import math
 from collections import Counter
-
-def DLCS_mod(clauses):
-    'Not really DLCS, it creates a frequency dict and samples from it'
-    freq = Counter([abs(x) for x in itertools.chain.from_iterable(clauses)])
-    freq_dist = FreqDist(freq)
-    prob_dist = MLEProbDist(freq_dist)
-    return prob_dist.generate()
 
 def DLCS(clauses):
     data_neq = Counter([x for x in itertools.chain.from_iterable(clauses)])
@@ -45,7 +37,7 @@ def get_row(variable):
 def get_column(variable):
     return str(variable)[1]
 def get_block(variable):
-    return (int(np.ceil(int(str(variable)[0])/3))-1)*3 + int(np.ceil(int(str(variable)[1])/3))
+    return (int(math.ceil(int(str(variable)[0])/3))-1)*3 + int(math.ceil(int(str(variable)[1])/3))
 
 def Row_wise_rand(clauses):
     clauses_by_row = [[],[],[],[],[],[],[],[],[]]

@@ -1,7 +1,6 @@
 import os
 import sys
 
-
 def parse_rules(filename):
     clauses = []
     variables = set()

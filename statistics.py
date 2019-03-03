@@ -1,7 +1,6 @@
-import matplotlib.pyplot as plt
-import numpy as np
 from heuristics import get_block, get_column, get_row
 from collections import namedtuple
+import math
 
 TimeStamp = namedtuple('TimeStamp', ['iter', 'split','backtrack', 'sat','row','column','block', 'depth'])
 
@@ -35,7 +34,7 @@ class StatCollector:
         self.depth += 1
 
         r, c, _ = str(split_var)
-        b = (int(np.ceil(int(r)/3))-1)*3 + int(np.ceil(int(c)/3))
+        b = (int(math.ceil(int(r)/3))-1)*3 + int(math.ceil(int(c)/3))
 
         self.row.add(int(r))
         self.column.add(int(c))
@@ -44,24 +43,6 @@ class StatCollector:
     def backtrack(self):
         self.n_backtrack += 1
         self.depth = 0
-
-    def visualize(self):
-        iters = [ts.iter for ts in self.history]
-        splits = [ts.split for ts in self.history]
-        depths = [ts.depth for ts in self.history]
-        sats = [ts.sat for ts in self.history]
-        rows = [ts.row for ts in self.history]
-        columns = [ts.column for ts in self.history]
-        blocks = [ts.block for ts in self.history]
-
-       # plt.plot(iters, splits, label = 'split')
-       # plt.plot(iters, sats, label = 'sat')
-       # plt.plot(iters, depths, label = 'depths')
-        plt.plot(iters, rows, label = 'rows')
-        plt.plot(iters, columns, label = 'columns')
-        plt.plot(iters, blocks, label = 'blocks')
-        plt.legend()
-        plt.show()
     
     def get_results(self):
         last_ts = self.history[-1]

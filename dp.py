@@ -1,9 +1,7 @@
 from heuristics import Random_split
 from simplificator import update_clauses, simplification, simplification_sudoku, sign
 from statistics import StatCollector
-from sanity import print_sudoku, check_sudoku
 from parser import parse_rules
-from statistics import StatCollector
 import time
 
 def dp(clauses, variables, heuristics_func = Random_split, stat_collector=None):
@@ -51,7 +49,6 @@ def davis_putnam(filename, heuristics, print_results = False):
     if print_results:
         print('Time to solve sudoku:', t1-t0)
         print('Result ', result)
-        print_sudoku(sorted([k for k,v in variables.items() if v>0]))
     stat_collector.print_stats(printing=print_results)
     
     

@@ -74,7 +74,6 @@ def update_clauses(clauses, var_dict):
             - modification of clause, if a literal has been set false already
             - no change, othwerwise
     '''
-    # TODO delete old list?
     new_clauses = []
     for clause in clauses:
         new_clause = []
