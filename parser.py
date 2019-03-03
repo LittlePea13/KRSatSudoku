@@ -1,5 +1,7 @@
 import os
 import sys
+
+
 def parse_rules(filename):
     clauses = []
     variables = set()
@@ -23,6 +25,19 @@ def parse_sudoku(filename):
     for clause in open(filename):
         units[clause[:-2]] = clause[-2]
     return units
+
+def write_dimacs(variables, sat_output):
+    n_variables = len(variables)
+
+    first_row = "p cnf {} {}\n".format(n_variables, n_variables)
+
+    with open(sat_output, "w") as f:
+        f.write(first_row)
+        for variable, sign in variables.items():
+            if sign == 1:
+                f.write("{} 0\n".format(variable))
+            elif sign == -1:
+                f.write("-{} 0\n".format(variable))
 
 if __name__ == '__main__':
     filename = sys.argv[1]

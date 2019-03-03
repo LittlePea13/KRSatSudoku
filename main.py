@@ -1,5 +1,5 @@
 from heuristics import Random_split, DLCS, Jeroslow_wang, Row_wise_lenght, Column_wise_lenght, Block_wise_lenght
-from dl import Davis_Putnam
+from dp import davis_putnam
 import sys
 
 
@@ -13,4 +13,4 @@ if __name__ == '__main__':
         heuristics = Column_wise_lenght
     elif heur == '3':
         heuristics = Block_wise_lenght
-    Davis_Putnam(filename, heuristics)
+    davis_putnam(filename, heuristics)
