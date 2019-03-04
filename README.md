@@ -20,3 +20,7 @@ S10: Column_wise
 S11: Block_wise  
 
 input_file: in DIMACS format
+
+### Experiments:  
+Solve sudokus with implemented heuristics and compare results with statistical methods.  
+(Note: Pandas is required to run.)
